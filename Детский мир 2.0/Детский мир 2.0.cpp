@@ -486,6 +486,7 @@ int main()
         default:
         {
             // error input
+            //second comment
             break;
         }
         }
