@@ -140,6 +140,7 @@ void printTable(vector<Mir> igrushka)
     printf("%c\n", 188);
     SetConsoleOutputCP(1251);
 }
+
 void getInfo()
 {
     // open file
@@ -402,7 +403,69 @@ void Tretie()
     getchar();
     cout << endl;
 }
+int Sravnenie(char* slovo1, char* slovo2)
+{
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
+    for (int i = 0; i < RAZMERCHAROV; i++)
+    {
+        if (slovo1[i] == slovo2[i]) continue;
+        if (slovo1[i] < slovo2[i]) return -1;
+        if (slovo1[i] > slovo2[i]) return 1;
+    }
+    SetConsoleOutputCP(866);
+    SetConsoleCP(866);
+    return 0;
+}
+void QS(vector <Mir>& igrushka, int left, int right)
+{
+    int i = left, j = right;
+    Mir k;
+    Mir opora = igrushka[(left + right) / 2];
 
+    do {
+        while (Sravnenie(igrushka[i].toy_name, opora.toy_name) == -1)
+            i++;
+        while (Sravnenie(igrushka[j].toy_name, opora.toy_name) == 1)
+            j--;
+        if (i <= j) {
+            k = igrushka[i];
+            igrushka[i] = igrushka[j];
+            igrushka[j] = k;
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    /* Рекурсия */
+    if (left < j)
+        QS(igrushka, left, j);
+    if (i < right)
+        QS(igrushka, i, right);
+}
+
+
+void Pyatoe()
+{
+    cout << "Хотите отсортировать файл? y/n: ";
+    char turn;
+    cin >> turn;
+
+    switch (turn)
+    {
+    case 'n':
+    case 'N':
+    {
+        break;
+    }
+    case 'y':
+    case 'Y':
+    {
+        QS(mir, 0, mir.size() - 1);
+        writeToFile(mir);
+    }
+    }
+}
 
 int main()
 {
@@ -468,13 +531,10 @@ int main()
             break;
         }
         case 5: {
+            Pyatoe();
             break;
         }
         case 6:
-        {
-            break;
-        }
-        case 7:
         {
             break;
         }
